@@ -7,11 +7,13 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private final ExampleHandlerThread handlerThread = new ExampleHandlerThread();
-    public static boolean threadStarted = false;
+    public static AtomicBoolean threadStarted = new AtomicBoolean(false);
 
 
     @Override
@@ -22,27 +24,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void startThread(View view) {
         Log.d(TAG, "startThread: button clicked");
-        if (threadStarted) {
+        if (threadStarted.get()) {
             Log.d(TAG, "startThread: thread is already started");
             return;
         }
-        threadStarted = true;
+        threadStarted = new AtomicBoolean(true);
         handlerThread.start();
     }
 
     public void stopThread(View view) {
         Log.d(TAG, "stopThread: button clicked");
-        if (!threadStarted) {
+        if (!threadStarted.get()) {
             Log.d(TAG, "stopThread: thread is already stopped");
             return;
         }
-        threadStarted = false;
-        handlerThread.looper.quit();
+        handlerThread.quit();
+        threadStarted.set(false);
     }
 
     public void executeTaskFoo(View view) {
         Log.d(TAG, "executeTaskFoo: button clicked");
-        if (!threadStarted) {
+        if (!threadStarted.get()) {
             Log.d(TAG, "executeTaskFoo: fail due to thread not started");
             return;
         }
@@ -53,12 +55,31 @@ public class MainActivity extends AppCompatActivity {
 
     public void executeTaskBar(View view) {
         Log.d(TAG, "executeTaskBar: button clicked");
-        if (!threadStarted) {
+        if (!threadStarted.get()) {
             Log.d(TAG, "executeTaskBar: fail due to thread not started");
             return;
         }
-        Message msg = Message.obtain();
+        Message msg = handlerThread.handler.obtainMessage();
         msg.what = ExampleHandler.EVENT_EXECUTE_TASK_BAR;
-        handlerThread.handler.sendMessage(msg);
+        msg.sendToTarget();
+    }
+
+    public void clearTasks(View view) {
+        Log.d(TAG, "clearTasks: button clicked");
+        if (!threadStarted.get()) {
+            Log.d(TAG, "clearTasks: fail due to thread not started");
+            return;
+        }
+        handlerThread.handler.removeCallbacksAndMessages(null);
+        Log.d(TAG, "clearTasks: ended");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (threadStarted.get()) {
+            handlerThread.quit();
+            threadStarted.set(false);
+        }
     }
 }

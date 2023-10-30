@@ -24,7 +24,8 @@
         app:layout_constraintBottom_toTopOf="@+id/stopThreadButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/taskFooButton"
@@ -35,7 +36,8 @@
         app:layout_constraintBottom_toTopOf="@+id/taskBarButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stopThreadButton" />
+        app:layout_constraintTop_toBottomOf="@+id/stopThreadButton"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/taskBarButton"
@@ -43,10 +45,11 @@
         android:layout_height="wrap_content"
         android:onClick="executeTaskBar"
         android:text="taskBar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskFooButton" />
+        app:layout_constraintTop_toBottomOf="@+id/taskFooButton"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/stopThreadButton"
@@ -57,6 +60,19 @@
         app:layout_constraintBottom_toTopOf="@+id/taskFooButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startThreadButton" />
+        app:layout_constraintTop_toBottomOf="@+id/startThreadButton"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clearTasks"
+        android:text="clearTasks"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskBarButton"
+        app:layout_constraintVertical_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
