@@ -23,8 +23,8 @@ public class ExampleHandlerThread extends HandlerThread {
         Looper.prepare();
 
         looper = Looper.myLooper();
-
-        handler = new Handler(Looper.getMainLooper());
+        assert looper != null;
+        handler = new ExampleHandler(looper);
 
         Looper.loop();
     }
